@@ -8,24 +8,26 @@ namespace Talabat.APIs.Controllers
     
     public class ProductsController : BaseApiController
     {
-        private readonly IGenericRepository<Product> _repo;
+        private readonly IProductServies _servies;
 
-        public ProductsController(IGenericRepository<Product> repo)
+        public ProductsController(IProductServies servies)
         {
-            _repo = repo;
+            _servies = servies;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts() 
         {
-            var products = await _repo.GetAll();
+            var products = await _servies.GetProducts();
+
             return Ok(products);
+
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var product  = await _repo.GetById(id);
+            var product = await _servies.GetProductById(id);    
             if (product == null)
                 return NotFound();
             return Ok(product);

@@ -7,7 +7,12 @@ namespace Talabat.Domain.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IReadOnlyList<T>> GetAll();
         Task<T?> GetById(int Id);
+
+        Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec);
+        Task<T?> GetWithSpec(ISpecification<T> spec);
+
+
     }
 }

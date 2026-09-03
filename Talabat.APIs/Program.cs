@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Talabat.APIs.Extensions;
+using Talabat.Applcation.Services;
 using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
 using Talabat.Infrastructure.Persistence.Repository;
@@ -24,6 +25,7 @@ namespace Talabat.APIs
             option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IProductServies), typeof(ProductServies));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
