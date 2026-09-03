@@ -15,6 +15,8 @@ namespace Talabat.Applcation.Specification.Product
         {
             AddInclude(p => p.ProductCategory);
             AddInclude(p => p.ProductBrand);
+
+            ApplyDisableTracking();
         }
     }
 }

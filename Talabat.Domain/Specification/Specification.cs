@@ -10,7 +10,7 @@ namespace Talabat.Domain.Specification
 {
     public abstract class Specification<T> : ISpecification<T> where T : BaseEntity
     {
-        public Expression<Func<T, bool>>? Criteria { get; }
+        public Expression<Func<T, bool>>? Criteria { get; private set; }
         public Collection<Expression<Func<T, object>>> Includes { get; set; } = new Collection<Expression<Func<T, object>>>();
         public bool DisableTracking { get; set; }
         public Expression<Func<T, object>> OrdeBy { get; private set; } = default!;
@@ -19,11 +19,10 @@ namespace Talabat.Domain.Specification
         protected Specification()
         {
         }
-        protected Specification(Expression<Func<T, bool>> criteria)
+        protected void AddCriteria(Expression<Func<T, bool>> criteria)
         {
             Criteria = criteria;
         }
-
 
         protected void AddOrderBy(Expression<Func<T, object>> orderByExpression)
         {
@@ -39,7 +38,7 @@ namespace Talabat.Domain.Specification
             Includes.Add(includeExpression);
         }
 
-        protected void AsNoTracking()
+        protected void ApplyDisableTracking()
         {
             DisableTracking = true;
 
