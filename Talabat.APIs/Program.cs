@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Talabat.APIs.Extensions;
+using Talabat.Applcation.ApplcationDependencies;
 using Talabat.Applcation.Services;
 using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
+using Talabat.Infrastructure.Persistence.InfrastructueDependinecies;
 using Talabat.Infrastructure.Persistence.Repository;
 
 namespace Talabat.APIs
@@ -18,19 +20,15 @@ namespace Talabat.APIs
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
-            builder.Services.AddDbContext<ApplcationDbContext>(option =>
-            { 
-            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped(typeof(IProductServies), typeof(ProductServies));
+
+            builder.Services.AddOpenApi();  
+            builder.Services.ApplyInfrastructureDependancies(builder.Configuration)
+                            .ApplyApplcationDependencies();  
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
-            { 
+            {   
                 
                 app.MapOpenApi();
                 app.MapScalarApiReference();
@@ -39,6 +37,7 @@ namespace Talabat.APIs
                 
             }
             app.UseHttpsRedirection();
+            app.UseStaticFiles();   
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

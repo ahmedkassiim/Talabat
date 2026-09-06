@@ -8,11 +8,12 @@ using Talabat.Domain.Interfaces;
 
 namespace Talabat.Domain.Specification
 {
-    public abstract class Specification<T> : ISpecification<T> where T : BaseEntity
+    public abstract class Specification<T,TResult> : ISpecification<T,TResult> where T : BaseEntity
     {
         public Expression<Func<T, bool>>? Criteria { get; private set; }
         public Collection<Expression<Func<T, object>>> Includes { get; set; } = new Collection<Expression<Func<T, object>>>();
         public bool DisableTracking { get; set; }
+        public Expression<Func<T, TResult>> SelectPredicate { get; private set; } = default!;
         public Expression<Func<T, object>> OrdeBy { get; private set; } = default!;
         public Expression<Func<T, object>> OrderByDescending { get; private set; } = default!;  
 
@@ -38,6 +39,10 @@ namespace Talabat.Domain.Specification
             Includes.Add(includeExpression);
         }
 
+        protected void AddSelect(Expression<Func<T, TResult>> selectExpression)
+        {
+            SelectPredicate = selectExpression;
+        }
         protected void ApplyDisableTracking()
         {
             DisableTracking = true;

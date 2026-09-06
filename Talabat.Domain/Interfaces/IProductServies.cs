@@ -5,10 +5,11 @@ using Talabat.Domain.Entities;
 
 namespace Talabat.Domain.Interfaces
 {
-    public interface IProductServies
+    public interface IProductServies<TResult>
     {
-        public Task<IEnumerable<Product>> GetProducts();
+        public Task<IEnumerable<TResult>> GetProducts(string? sorting ,int? categoryId , int? brandId);
 
-        public Task<Product?> GetProductById(int Id);
+        public Task<TResult?> GetProductById(int Id);
+
     }
 }
