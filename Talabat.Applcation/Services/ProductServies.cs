@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Product;
 using Talabat.Domain.Entities;
 using Talabat.Domain.Interfaces;
@@ -9,24 +12,31 @@ using Talabat.Infrastructure.Persistence.Data;
 
 namespace Talabat.Applcation.Services
 {
-    public class ProductServies : IProductServies
+    public class ProductServies<TResult> : IProductServies<ProductResponseDto>
     {
-        private readonly IGenericRepository<Product> _repo;
-     
-        public ProductServies(IGenericRepository<Product> repo)
+        private readonly IGenericRepository<Product, ProductResponseDto> _repo;
+        private readonly IConfiguration _configuration;
+        public ProductServies(IGenericRepository<Product, ProductResponseDto> repo, IConfiguration configuration)
         {
             _repo = repo;
+            _configuration = configuration;
         }
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<ProductResponseDto>> GetProducts(string? sorting, int? categoryId, int? brandId)
         {
-            var products = await _repo.GetAllWithSpec(new GetAllProductSpecification());
+            var products = await _repo.GetAllWithSpec(new GetAllProductSpecification(_configuration, sorting, categoryId, brandId));
             return products;
         }
-        public Task<Product?> GetProductById(int Id)
+        public async Task<ProductResponseDto?> GetProductById(int Id)
         {
-           var product  = _repo.GetWithSpec(new GetProductByIdSpecification(Id));
-            return product; 
+            var product = await _repo.GetWithSpec(new GetProductByIdSpecification(Id, _configuration));
+            return product;
+        }
+
+    
+
         }
 
     }
-}
+
+            
+

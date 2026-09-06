@@ -9,42 +9,31 @@ using Talabat.Infrastructure.Persistence.Specification;
 
 namespace Talabat.Infrastructure.Persistence.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T,TResult> : IGenericRepository<T,TResult> where T : BaseEntity
     {
-        private readonly ApplcationDbContext _dbContext;
+        private readonly IQueryable<T> _dbSet;
 
         public GenericRepository(ApplcationDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _dbSet = dbContext.Set<T>();
         }
-        public async Task<IReadOnlyList<T>> GetAll()
+        public async Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T,TResult> spec)
         {
-           //if(typeof(T) == typeof(Product))
-           //    return (IEnumerable<T>) await _dbContext.Set<Product>().Include(P => P.ProductBrand).Include(P => P.ProductCategory).AsNoTracking().ToListAsync();
-            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
-
-
-        }
-
-        public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec)
-        {
-           var query = await SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec).ToListAsync();
+           var query = await ApplySpecification(spec).ToListAsync();
            return query;
         
         }
-
-        public async Task<T?> GetById(int Id)   
+        public async Task<TResult?> GetWithSpec(ISpecification<T,TResult> spec)
         {
-           // if(typeof(T) == typeof(Product))
-           //         return await _dbContext.Set<Product>().Where(P => P.Id == Id).Include(P => P.ProductBrand).Include(P => P.ProductCategory).AsNoTracking().FirstAsync(e => e.Id == Id) as T;
-            var entity = await _dbContext.Set<T>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == Id);
-            return entity;
-        }
-
-        public async Task<T?> GetWithSpec(ISpecification<T> spec)
-        {
-           var entity = await SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec).FirstOrDefaultAsync();
+           var entity = await ApplySpecification(spec).FirstOrDefaultAsync();
            return entity;
         }
+
+        private IQueryable<TResult> ApplySpecification(ISpecification<T,TResult> spec)
+        {
+
+            return SpecificationEvaluator<T,TResult>.GetQuery(_dbSet, spec);
+        }
+
     }
 }

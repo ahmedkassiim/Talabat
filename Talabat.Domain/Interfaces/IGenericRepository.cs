@@ -5,13 +5,11 @@ using Talabat.Domain.Entities;
 
 namespace Talabat.Domain.Interfaces
 {
-    public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<T,TResult> where T : BaseEntity
     {
-        Task<IReadOnlyList<T>> GetAll();
-        Task<T?> GetById(int Id);
-
-        Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec);
-        Task<T?> GetWithSpec(ISpecification<T> spec);
+ 
+        Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T,TResult> spec);
+        Task<TResult?> GetWithSpec(ISpecification<T,TResult> spec);
 
 
     }
