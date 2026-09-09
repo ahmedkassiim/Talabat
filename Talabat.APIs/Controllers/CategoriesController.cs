@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.Applcation.Dtos.Product;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Categorys;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.APIs.Controllers
@@ -23,4 +23,4 @@ namespace Talabat.APIs.Controllers
             return Ok(categories);
         }
     }
-}
+} 

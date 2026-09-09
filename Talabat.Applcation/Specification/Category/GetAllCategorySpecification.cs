@@ -6,7 +6,7 @@ using Talabat.Domain.Specification;
 
 namespace Talabat.Applcation.Specification.Category
 {
-    internal class GetAllCategorySpecification :Specification<Domain.Entities.Category ,CategoryResponseDto>
+    internal class GetAllCategorySpecification :Specification<Domain.Entities.Categorys.Category ,CategoryResponseDto>
     {
         public GetAllCategorySpecification()
         {

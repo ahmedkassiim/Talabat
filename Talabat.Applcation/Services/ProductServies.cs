@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Product;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Products;
 using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
 

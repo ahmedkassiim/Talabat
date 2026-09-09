@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Talabat.Applcation.Dtos.Product;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Applcation.Helper
 {
