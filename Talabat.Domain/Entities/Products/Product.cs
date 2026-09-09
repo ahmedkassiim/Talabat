@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Talabat.Domain.Entities.Brands;
+using Talabat.Domain.Entities.Categorys;
 
-namespace Talabat.Domain.Entities
+namespace Talabat.Domain.Entities.Products
 {
     public class Product : BaseEntity
     {

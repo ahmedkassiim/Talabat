@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Category;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Categorys;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.Applcation.Services

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Categorys;
 
 namespace Talabat.Infrastructure.Persistence.Configuration
 {

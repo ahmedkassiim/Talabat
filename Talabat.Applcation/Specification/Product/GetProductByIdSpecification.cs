@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Talabat.Applcation.Dtos.Product;
-using Talabat.Domain.Entities;
 using Talabat.Domain.Specification;
 
 namespace Talabat.Applcation.Specification.Product
 {
-    public class GetProductByIdSpecification : Specification<Domain.Entities.Product,ProductResponseDto>
+    public class GetProductByIdSpecification : Specification<Domain.Entities.Products.Product,ProductResponseDto>
     {
         private readonly IConfiguration _configuration;
 

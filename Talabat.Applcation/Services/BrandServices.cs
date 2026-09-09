@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Brand;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Brands;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.Applcation.Services

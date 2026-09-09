@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
-using Talabat.Domain.Entities;
+using Talabat.Domain.Entities.Brands;
+using Talabat.Domain.Entities.Categorys;
+using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence.Data
 {
