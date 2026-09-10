@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Domain.Entities.Brands;
 using Talabat.Domain.Interfaces;
@@ -11,7 +10,7 @@ namespace Talabat.APIs.Controllers
     {
         private readonly IBrandServices<Brand, BrandResponseDto> _servies;
 
-        public BrandsController(IBrandServices<Brand,BrandResponseDto> servies)
+        public BrandsController(IBrandServices<Brand, BrandResponseDto> servies)
         {
             _servies = servies;
         }

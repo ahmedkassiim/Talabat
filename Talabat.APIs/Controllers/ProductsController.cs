@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.Applcation.Dtos.Product;
-using Talabat.Domain.Entities;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.APIs.Controllers
 {
-    
+
     public class ProductsController : BaseApiController
     {
         private readonly IProductServies<ProductResponseDto> _servies;
@@ -17,7 +15,7 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts([FromQuery] string? sorting ,int? categoryId,int? brandId)
+        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts([FromQuery] string? sorting, int? categoryId, int? brandId)
         {
             var products = await _servies.GetProducts(sorting, categoryId, brandId);
             return Ok(products);
@@ -27,7 +25,7 @@ namespace Talabat.APIs.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResponseDto>> GetProductById(int id)
         {
-            var product = await _servies.GetProductById(id);    
+            var product = await _servies.GetProductById(id);
             if (product == null)
                 return NotFound();
             return Ok(product);

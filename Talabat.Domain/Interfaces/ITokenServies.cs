@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Identity;
 using Talabat.Domain.Entities.Accounts;
 
 namespace Talabat.Domain.Interfaces
 {
     public interface ITokenServies
     {
-        string GenerateToken(ApplcationUser user);
+        Task<string> GenerateTokenAsync(ApplcationUser user, UserManager<ApplcationUser> userManager);
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Talabat.Applcation.Dtos.Account
 {
-    public record UserLoginDto(string userEmail, string password);
+    public record UserLoginDto([Required] string userEmail
+        , [Required] string password);
 }

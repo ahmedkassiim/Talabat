@@ -1,14 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.Configuration;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Product;
 using Talabat.Domain.Entities.Products;
 using Talabat.Domain.Interfaces;
-using Talabat.Infrastructure.Persistence.Data;
 
 namespace Talabat.Applcation.Services
 {
@@ -32,11 +26,11 @@ namespace Talabat.Applcation.Services
             return product;
         }
 
-    
 
-        }
 
     }
 
-            
+}
+
+
 
