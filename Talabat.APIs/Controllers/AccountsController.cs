@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Talabat.Applcation.Dtos.Account;
 using Talabat.Domain.Entities.Accounts;
 using Talabat.Domain.Interfaces;
@@ -28,7 +22,7 @@ namespace Talabat.APIs.Controllers
         }
 
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<LoginDetailsDto>> Login(UserLoginDto userLogin)
         {
 
@@ -43,34 +37,36 @@ namespace Talabat.APIs.Controllers
                 return Ok(new LoginDetailsDto
                 {
                     UserName = userLogin.userEmail,
-                    Token = _token.GenerateToken(user)
+                    Email = userLogin.userEmail,
+                    Token = await _token.GenerateTokenAsync(user, _userManager)
                 });
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
 
         public async Task<ActionResult<RegisterDetailsDto>> Register(UserRegisterDto userRegisterDto)
         {
 
             var result = await _userManager.FindByEmailAsync(userRegisterDto.Email);
-            if(result is not null)
+            if (result is not null)
                 return BadRequest();
 
             var applcationUser = new ApplcationUser()
             {
                 DisplayName = userRegisterDto.FristName + " " + userRegisterDto.LastName,
-                UserName = userRegisterDto.Email,
+                UserName = userRegisterDto.Email.Split("@")[0],
                 Email = userRegisterDto.Email,
                 PhoneNumber = userRegisterDto.PhoneNumber
             };
-          var userResult =   await _userManager.CreateAsync(applcationUser, userRegisterDto.Password);
+            var userResult = await _userManager.CreateAsync(applcationUser, userRegisterDto.Password);
             if (!userResult.Succeeded)
                 return BadRequest();
-           return Ok( new RegisterDetailsDto
-           {
-               UserName = applcationUser.DisplayName,
-               Token = _token.GenerateToken(applcationUser)
-           });       
+            return Ok(new RegisterDetailsDto
+            {
+                UserName = applcationUser.DisplayName,
+                Email = applcationUser.Email,
+                Token = await _token.GenerateTokenAsync(applcationUser, _userManager)
+            });
         }
     }
- }
+}

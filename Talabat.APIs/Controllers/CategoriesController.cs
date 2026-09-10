@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Domain.Entities.Categorys;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.APIs.Controllers
 {
- 
+
     public class CategoriesController : BaseApiController
     {
         private readonly ICategoryServices<Category, CategoryResponseDto> _services;
 
-        public CategoriesController(ICategoryServices<Category,CategoryResponseDto> services)
+        public CategoriesController(ICategoryServices<Category, CategoryResponseDto> services)
         {
             _services = services;
         }
@@ -23,4 +22,4 @@ namespace Talabat.APIs.Controllers
             return Ok(categories);
         }
     }
-} 
+}

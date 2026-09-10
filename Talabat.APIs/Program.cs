@@ -1,17 +1,12 @@
-
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
 using Talabat.APIs.Extensions;
 using Talabat.Applcation.ApplcationDependencies;
-using Talabat.Applcation.Services;
 using Talabat.Domain.Entities.Accounts;
-using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
 using Talabat.Infrastructure.Persistence.InfrastructueDependinecies;
-using Talabat.Infrastructure.Persistence.Repository;
 
 namespace Talabat.APIs
 {
@@ -24,7 +19,7 @@ namespace Talabat.APIs
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddIdentity<ApplcationUser, IdentityRole>()    
+            builder.Services.AddIdentity<ApplcationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplcationDbContext>()
             .AddDefaultTokenProviders();
             builder.Services.AddOpenApi();
@@ -33,7 +28,7 @@ namespace Talabat.APIs
 
             // validation on Token 
             builder.Services.AddAuthentication(op => op.DefaultAuthenticateScheme = "MySchema")
-                .AddJwtBearer("MySchema", op => 
+                .AddJwtBearer("MySchema", op =>
                 {
                     var scuritKey = "Ahmed Kassim Will Generate a new Secrit Key To Added On JWT Token";
 
@@ -56,16 +51,17 @@ namespace Talabat.APIs
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
-            {   
-                
+            {
+
                 app.MapOpenApi();
                 app.MapScalarApiReference();
                 app.MapGet("/", () => Results.Redirect("/scalar/v1"));
                 await app.ApplyMigration();
-                
+
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();   
+            app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             app.Run();

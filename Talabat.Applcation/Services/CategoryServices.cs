@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Talabat.Applcation.Dtos.Product;
+﻿using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Category;
 using Talabat.Domain.Entities.Categorys;
 using Talabat.Domain.Interfaces;
 
 namespace Talabat.Applcation.Services
 {
-    public class CategoryServices<T,TResult> : ICategoryServices<Category, CategoryResponseDto>
+    public class CategoryServices<T, TResult> : ICategoryServices<Category, CategoryResponseDto>
     {
         private readonly IGenericRepository<Category, CategoryResponseDto> _repo;
 
