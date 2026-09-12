@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Talabat.Applcation.Dtos.Account;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Helper;
+using Talabat.Domain.Entities.Accounts;
 using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Applcation.Mapper
 {
-    public class MappingProfile :Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
@@ -20,9 +19,7 @@ namespace Talabat.Applcation.Mapper
 
 
 
-
-
-
+            CreateMap<Address, UserAddressDto>().ReverseMap();
         }
     }
 }

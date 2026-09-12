@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using Talabat.Domain.Entities.Accounts;
 using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
 using Talabat.Infrastructure.Persistence.Repository;
@@ -15,7 +9,7 @@ namespace Talabat.Infrastructure.Persistence.InfrastructueDependinecies
 {
     public static class InfrastructureDependancies
     {
-        public static IServiceCollection ApplyInfrastructureDependancies(this IServiceCollection services ,IConfiguration configuration)
+        public static IServiceCollection ApplyInfrastructureDependancies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplcationDbContext>(option =>
             {
@@ -26,5 +20,4 @@ namespace Talabat.Infrastructure.Persistence.InfrastructueDependinecies
             return services;
         }
     }
-    }
-    
+}

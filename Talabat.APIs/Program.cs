@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
@@ -27,26 +28,21 @@ namespace Talabat.APIs
                             .ApplyApplcationDependencies();
 
             // validation on Token 
-            builder.Services.AddAuthentication(op => op.DefaultAuthenticateScheme = "MySchema")
-                .AddJwtBearer("MySchema", op =>
+            builder.Services.AddAuthentication(op => op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, op =>
                 {
-                    var scuritKey = "Ahmed Kassim Will Generate a new Secrit Key To Added On JWT Token";
-
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(scuritKey));
-
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:secretkey"] ?? string.Empty));
                     op.TokenValidationParameters = new TokenValidationParameters()
                     {
-
                         IssuerSigningKey = key,
                         ValidateLifetime = true,
-                        ValidateAudience = false,
-                        ValidateIssuer = false
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                        ValidateIssuer = true,
+                        ClockSkew = TimeSpan.FromMinutes(3)
                     };
-
-
                 });
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
