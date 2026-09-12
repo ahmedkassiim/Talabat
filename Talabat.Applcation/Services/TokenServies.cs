@@ -19,7 +19,7 @@ namespace Talabat.Applcation.Services
             {
 
                 List<Claim> userClaims = new List<Claim>();
-                userClaims.Add(new Claim(ClaimTypes.Name, user.UserName!));
+                userClaims.Add(new Claim(ClaimTypes.Name, user.DisplayName));
                 userClaims.Add(new Claim(ClaimTypes.Email, user.Email!));
                 var userRoles = await userManager.GetRolesAsync(user);
                 foreach (var role in userRoles)

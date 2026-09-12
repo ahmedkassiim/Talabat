@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Talabat.Applcation.Dtos.Account;
+using Talabat.Applcation.Specification.Users;
 using Talabat.Domain.Entities.Accounts;
 using Talabat.Domain.Interfaces;
 
@@ -11,14 +16,20 @@ namespace Talabat.APIs.Controllers
         private readonly SignInManager<ApplcationUser> _signInManager;
         private readonly UserManager<ApplcationUser> _userManager;
         private readonly ITokenServies _token;
+        private readonly IGenericRepository<Address, UserAddressDto> _addressrepo;
+        private readonly IMapper _mapper;
 
         public AccountsController(SignInManager<ApplcationUser> signInManager,
             UserManager<ApplcationUser> userManager,
-            ITokenServies token)
+            ITokenServies token,
+            IGenericRepository<Address, UserAddressDto> addressrepo,
+            IMapper mapper)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _token = token;
+            _addressrepo = addressrepo;
+            _mapper = mapper;
         }
 
 
@@ -36,7 +47,7 @@ namespace Talabat.APIs.Controllers
             else
                 return Ok(new LoginDetailsDto
                 {
-                    UserName = userLogin.userEmail,
+                    DisplayName = userLogin.userEmail.Split("@")[0],
                     Email = userLogin.userEmail,
                     Token = await _token.GenerateTokenAsync(user, _userManager)
                 });
@@ -53,8 +64,8 @@ namespace Talabat.APIs.Controllers
 
             var applcationUser = new ApplcationUser()
             {
-                DisplayName = userRegisterDto.FristName + " " + userRegisterDto.LastName,
-                UserName = userRegisterDto.Email.Split("@")[0],
+                UserName = userRegisterDto.FristName + "" + userRegisterDto.LastName,
+                DisplayName = userRegisterDto.Email.Split("@")[0],
                 Email = userRegisterDto.Email,
                 PhoneNumber = userRegisterDto.PhoneNumber
             };
@@ -63,10 +74,56 @@ namespace Talabat.APIs.Controllers
                 return BadRequest();
             return Ok(new RegisterDetailsDto
             {
-                UserName = applcationUser.DisplayName,
+                DisplayName = applcationUser.DisplayName,
                 Email = applcationUser.Email,
                 Token = await _token.GenerateTokenAsync(applcationUser, _userManager)
             });
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<LoginDetailsDto>> GetCurrentUser()
+        {
+
+            var email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+
+            var user = await _userManager.FindByEmailAsync(email);
+            return Ok(new LoginDetailsDto()
+            {
+                DisplayName = user?.DisplayName ?? string.Empty,
+                Email = user?.Email ?? string.Empty,
+                Token = await _token.GenerateTokenAsync(user!, _userManager)
+            });
+
+        }
+        [Authorize]
+        [HttpGet("address")]
+        public async Task<ActionResult<UserAddressDto>> GetUserAddress()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email ?? string.Empty);
+            if (user is null)
+                return BadRequest();
+            var address = await _addressrepo.GetWithSpec(new GetUserAddressSpecification(user));
+            if (address is null)
+                return Ok("No address for this User");
+            return Ok(address);
+        }
+
+        [Authorize]
+        [HttpPut("address")]
+        public async Task<ActionResult<UserAddressDto>> UpdateUserAddresss(UserAddressDto address)
+        {
+
+            var updatedAddress = _mapper.Map<Address>(address);
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.Users.Where(u => u.Email == email).Include(u => u.Address).FirstOrDefaultAsync();
+            updatedAddress.Id = user.Address.Id;
+            user.Address = updatedAddress;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                return NotFound();
+            return Ok(_mapper.Map<UserAddressDto>(updatedAddress));
         }
     }
 }

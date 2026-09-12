@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Talabat.Domain.Entities.Accounts
 {
@@ -10,6 +7,6 @@ namespace Talabat.Domain.Entities.Accounts
 
         public string DisplayName { get; set; } = default!;
 
-        public Address? Address { get; set; }
+        public virtual Address? Address { get; set; }
     }
 }

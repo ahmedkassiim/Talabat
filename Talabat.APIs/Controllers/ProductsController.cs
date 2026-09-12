@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Domain.Interfaces;
 
@@ -15,6 +16,7 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts([FromQuery] string? sorting, int? categoryId, int? brandId)
         {
             var products = await _servies.GetProducts(sorting, categoryId, brandId);
