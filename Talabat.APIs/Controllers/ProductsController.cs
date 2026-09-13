@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Talabat.APIs.Helper;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Domain.Interfaces;
+using Talabat.Domain.Specification;
 
 namespace Talabat.APIs.Controllers
 {
@@ -17,10 +19,10 @@ namespace Talabat.APIs.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetProducts([FromQuery] string? sorting, int? categoryId, int? brandId)
+        public async Task<ActionResult<IReadOnlyList<Pagenation<ProductResponseDto>>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
-            var products = await _servies.GetProducts(sorting, categoryId, brandId);
-            return Ok(products);
+            var result = await _servies.GetProducts(specParams);
+            return Ok(new Pagenation<ProductResponseDto>(specParams.PageSize, specParams.PageIndex, result.TotalCount, result.Products));
 
         }
 
@@ -32,14 +34,7 @@ namespace Talabat.APIs.Controllers
                 return NotFound();
             return Ok(product);
         }
-        //[HttpGet("Id/{id}")]
-        //public async Task<ActionResult<Product>> GetById(int id)
-        //{
-        //    var product = await _servies.GetByIdProduct(id);    
-        //    if (product == null)
-        //        return NotFound();
-        //    return Ok(product);
-        //}
+
 
     }
 }
