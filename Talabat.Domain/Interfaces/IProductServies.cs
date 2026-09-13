@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Talabat.Domain.Entities;
+﻿using Talabat.Domain.Specification;
 
 namespace Talabat.Domain.Interfaces
 {
     public interface IProductServies<TResult>
     {
-        public Task<IEnumerable<TResult>> GetProducts(string? sorting ,int? categoryId , int? brandId);
+        public Task<(IReadOnlyList<TResult> Products, int TotalCount)> GetProducts(ProductSpecParams specParams);
 
         public Task<TResult?> GetProductById(int Id);
+
 
     }
 }

@@ -13,6 +13,11 @@ namespace Talabat.Domain.Specification
         public Expression<Func<T, TResult>> SelectPredicate { get; private set; } = default!;
         public Expression<Func<T, object>> OrdeBy { get; private set; } = default!;
         public Expression<Func<T, object>> OrderByDescending { get; private set; } = default!;
+        public int Skip { get; set; }
+        public int Take { get; set; }
+
+        public bool IsPaginationEnabled { get; set; }
+        public int TotalCount { get; set; }
 
         protected Specification()
         {
@@ -45,5 +50,12 @@ namespace Talabat.Domain.Specification
             DisableTracking = true;
 
         }
+        protected void ApplyPagination(int skip, int take)
+        {
+            IsPaginationEnabled = true;
+            Skip = skip;
+            Take = take;
+        }
     }
 }
+

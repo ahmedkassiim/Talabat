@@ -1,24 +1,20 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Talabat.Applcation.Dtos.Product;
-using Talabat.Domain.Interfaces;
 using Talabat.Domain.Specification;
 
 namespace Talabat.Applcation.Specification.Product
 {
-    public class GetAllProductSpecification: Specification<Domain.Entities.Products.Product,ProductResponseDto>
+    public class GetAllProductSpecification : Specification<Domain.Entities.Products.Product, ProductResponseDto>
     {
         private readonly IConfiguration _configuration;
-        public GetAllProductSpecification(IConfiguration configuration ,string? sorting , int? categoryId, int? brandId):base()
+        public GetAllProductSpecification(IConfiguration configuration, ProductSpecParams specParams) : base()
         {
 
             _configuration = configuration;
             var baseUrl = _configuration.GetSection("appSettings:BaseUrl").Value;
 
-            AddCriteria(P => (!categoryId.HasValue || P.CategoryId == categoryId) 
-            && (!brandId.HasValue || P.BrandId == brandId));
+            AddCriteria(P => (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId)
+            && (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId));
 
             AddSelect(P => new ProductResponseDto
             {
@@ -33,22 +29,25 @@ namespace Talabat.Applcation.Specification.Product
                 CategoryId = P.CategoryId
             });
 
-            switch (sorting)
+            switch (specParams.Sorting)
             {
                 case "priceAsc":
                     AddOrderBy(P => P.Price);
                     break;
                 case "priceDesc":
-                        AddOrderByDescending(P => P.Price);
+                    AddOrderByDescending(P => P.Price);
                     break;
                 case "name":
                     AddOrderBy(P => P.Name);
                     break;
-                 
+
                 default:
                     AddOrderBy(P => P.Name);
                     break;
             }
+
+
+            ApplyPagination((specParams.PageSize * (specParams.PageIndex - 1)), specParams.PageSize);
             ApplyDisableTracking();
         }
     }
