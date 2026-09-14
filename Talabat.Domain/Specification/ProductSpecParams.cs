@@ -19,7 +19,7 @@
         public string? Search
         {
             get { return search; }
-            set { search = value?.ToLower(); }
+            set { search = value?.ToUpper(); }
         }
 
         public string? Sorting { get; set; }

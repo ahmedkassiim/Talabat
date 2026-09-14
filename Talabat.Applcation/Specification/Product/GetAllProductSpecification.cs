@@ -14,7 +14,7 @@ namespace Talabat.Applcation.Specification.Product
             var baseUrl = _configuration.GetSection("appSettings:BaseUrl").Value;
 
             AddCriteria(P =>
-            (string.IsNullOrEmpty(specParams.Search)) || (P.Name.ToLower().Contains(specParams.Search) &&
+            (string.IsNullOrEmpty(specParams.Search)) || (P.NormalizedName.Contains(specParams.Search) &&
             (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId)
             && (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId)));
 
