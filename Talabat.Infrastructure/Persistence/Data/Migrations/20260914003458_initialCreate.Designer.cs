@@ -12,15 +12,15 @@ using Talabat.Infrastructure.Persistence.Data;
 namespace Talabat.Infrastructure.Persistence.Data.Migrations
 {
     [DbContext(typeof(ApplcationDbContext))]
-    [Migration("20260907162351_AddUserIdentityModels")]
-    partial class AddUserIdentityModels
+    [Migration("20260914003458_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -329,6 +329,10 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PictureUrl")
                         .IsRequired()

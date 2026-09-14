@@ -13,8 +13,10 @@ namespace Talabat.Applcation.Specification.Product
             _configuration = configuration;
             var baseUrl = _configuration.GetSection("appSettings:BaseUrl").Value;
 
-            AddCriteria(P => (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId)
-            && (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId));
+            AddCriteria(P =>
+            (string.IsNullOrEmpty(specParams.Search)) || (P.NormalizedName.Contains(specParams.Search) &&
+            (!specParams.CategoryId.HasValue || P.CategoryId == specParams.CategoryId)
+            && (!specParams.BrandId.HasValue || P.BrandId == specParams.BrandId)));
 
             AddSelect(P => new ProductResponseDto
             {

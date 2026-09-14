@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Talabat.Applcation.Helper;
 using Talabat.Applcation.Mapper;
 using Talabat.Applcation.Services;
