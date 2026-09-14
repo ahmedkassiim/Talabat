@@ -4,6 +4,7 @@
     {
         private const int MaxPageSize = 10;
 
+
         private int pageSize;
 
         public int PageSize
@@ -12,6 +13,14 @@
             set { pageSize = value < MaxPageSize ? MaxPageSize : value; }
         }
         public int PageIndex { get; set; }
+
+        private string? search;
+
+        public string? Search
+        {
+            get { return search; }
+            set { search = value?.ToLower(); }
+        }
 
         public string? Sorting { get; set; }
         public int? CategoryId { get; set; }
