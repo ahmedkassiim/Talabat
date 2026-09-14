@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Talabat.Applcation.Dtos.Account;
+using Talabat.Applcation.Dtos.Basket;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Helper;
 using Talabat.Domain.Entities.Accounts;
+using Talabat.Domain.Entities.Basket;
 using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Applcation.Mapper
@@ -20,6 +22,9 @@ namespace Talabat.Applcation.Mapper
 
 
             CreateMap<Address, UserAddressDto>().ReverseMap();
+            CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
+            CreateMap<BasketItemDto, BasketItem>().ReverseMap();
+
         }
     }
 }
