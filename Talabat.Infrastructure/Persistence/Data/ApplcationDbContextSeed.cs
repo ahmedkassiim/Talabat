@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Talabat.Domain.Entities.Brands;
 using Talabat.Domain.Entities.Categorys;
+using Talabat.Domain.Entities.Order_Aggregate;
 using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence.Data
@@ -13,42 +11,66 @@ namespace Talabat.Infrastructure.Persistence.Data
         public static async Task SeedAsync(ApplcationDbContext dbContext)
         {
 
-            if(dbContext.Brands.Count() == 0)
+            if (dbContext.Brands.Count() == 0)
             {
-            var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/brands.json";
-            var file = File.ReadAllText(filePath);
-            var brands = JsonSerializer.Deserialize<IEnumerable<Brand>>(file);
-                if(brands is not null && brands.Count() >0 )
-                foreach(var brand in brands)
-                {
-                      await  dbContext.AddAsync(brand);
-                }
-              await  dbContext.SaveChangesAsync();
+                var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/brands.json";
+                var file = File.ReadAllText(filePath);
+                var brands = JsonSerializer.Deserialize<IEnumerable<Brand>>(file);
+                if (brands is not null && brands.Count() > 0)
+                    foreach (var brand in brands)
+                    {
+                        await dbContext.AddAsync(brand);
+                    }
+                await dbContext.SaveChangesAsync();
             }
-            if(dbContext.Categories.Count() == 0)
+            if (dbContext.Categories.Count() == 0)
             {
-            var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/categories.json";
-            var file = File.ReadAllText(filePath);
-            var categories = JsonSerializer.Deserialize<IEnumerable<Category>>(file);
-                if(categories is not null && categories.Count() >0 )
-                foreach(var category in categories)
-                {
-                      await  dbContext.AddAsync(category);
-                }
-              await  dbContext.SaveChangesAsync();
+                var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/categories.json";
+                var file = File.ReadAllText(filePath);
+                var categories = JsonSerializer.Deserialize<IEnumerable<Category>>(file);
+                if (categories is not null && categories.Count() > 0)
+                    foreach (var category in categories)
+                    {
+                        await dbContext.AddAsync(category);
+                    }
+                await dbContext.SaveChangesAsync();
             }
 
-            if(dbContext.Products.Count() == 0)
+            if (dbContext.Products.Count() == 0)
             {
-            var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/products.json";
-            var file = File.ReadAllText(filePath);
-            var products = JsonSerializer.Deserialize<IEnumerable<Product>>(file);
-                if(products is not null && products.Count() >0 )
-                foreach(var product in products)
-                {
-                      await  dbContext.AddAsync(product);
-                }
-              await  dbContext.SaveChangesAsync();
+                var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/products.json";
+                var file = File.ReadAllText(filePath);
+                var products = JsonSerializer.Deserialize<IEnumerable<Product>>(file);
+                if (products is not null && products.Count() > 0)
+                    foreach (var product in products)
+                    {
+                        await dbContext.AddAsync(product);
+                    }
+                await dbContext.SaveChangesAsync();
+            }
+            if (dbContext.Products.Count() == 0)
+            {
+                var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/products.json";
+                var file = File.ReadAllText(filePath);
+                var products = JsonSerializer.Deserialize<IEnumerable<Product>>(file);
+                if (products is not null && products.Count() > 0)
+                    foreach (var product in products)
+                    {
+                        await dbContext.AddAsync(product);
+                    }
+                await dbContext.SaveChangesAsync();
+            }
+            if (dbContext.Deliveries.Count() == 0)
+            {
+                var filePath = "../Talabat.Infrastructure/Persistence/Data/Fileseeding/delivery.json";
+                var file = File.ReadAllText(filePath);
+                var deliveriesMethod = JsonSerializer.Deserialize<IEnumerable<DeliveryMethod>>(file);
+                if (deliveriesMethod is not null && deliveriesMethod.Count() > 0)
+                    foreach (var delivery in deliveriesMethod)
+                    {
+                        await dbContext.AddAsync(delivery);
+                    }
+                await dbContext.SaveChangesAsync();
             }
 
 

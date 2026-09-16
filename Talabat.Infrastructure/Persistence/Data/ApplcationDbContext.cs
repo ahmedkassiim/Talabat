@@ -1,20 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using Talabat.Domain.Entities.Accounts;
 using Talabat.Domain.Entities.Brands;
 using Talabat.Domain.Entities.Categorys;
+using Talabat.Domain.Entities.Order_Aggregate;
 using Talabat.Domain.Entities.Products;
 
 namespace Talabat.Infrastructure.Persistence.Data
 {
-    public class ApplcationDbContext :IdentityDbContext<ApplcationUser>
+    public class ApplcationDbContext : IdentityDbContext<Domain.Entities.Accounts.ApplcationUser>
     {
 
-        public ApplcationDbContext(DbContextOptions<ApplcationDbContext> options):base(options) 
+        public ApplcationDbContext(DbContextOptions<ApplcationDbContext> options) : base(options)
         {
 
         }
@@ -29,6 +26,9 @@ namespace Talabat.Infrastructure.Persistence.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Domain.Entities.Accounts.Address> Addresses { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<DeliveryMethod> Deliveries { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
