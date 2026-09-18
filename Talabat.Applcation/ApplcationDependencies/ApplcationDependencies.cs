@@ -16,6 +16,7 @@ namespace Talabat.Applcation.ApplcationDependencies
             services.AddScoped(typeof(ITokenServies), typeof(TokenServies));
             services.AddScoped<PicUrlResolver>();
             services.AddAutoMapper(P => P.AddProfile<MappingProfile>());
+            services.AddScoped(typeof(IOrderService), (typeof(OrderService)));
             return services;
         }
 

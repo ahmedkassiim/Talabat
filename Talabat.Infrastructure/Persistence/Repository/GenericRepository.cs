@@ -8,12 +8,20 @@ namespace Talabat.Infrastructure.Persistence.Repository
 {
     public class GenericRepository<T, TResult> : IGenericRepository<T, TResult> where T : BaseEntity
     {
-        private readonly IQueryable<T> _dbSet;
+        private readonly ApplcationDbContext _dbContext;
+
 
         public GenericRepository(ApplcationDbContext dbContext)
         {
-            _dbSet = dbContext.Set<T>();
+            _dbContext = dbContext;
         }
+
+        public async Task AddAsync(T entity)
+        {
+            await _dbContext.Set<T>().AddAsync(entity);
+            _dbContext.SaveChanges();
+        }
+
         public async Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T, TResult> spec)
         {
             var query = await ApplySpecification(spec).ToListAsync();
@@ -30,7 +38,7 @@ namespace Talabat.Infrastructure.Persistence.Repository
         private IQueryable<TResult> ApplySpecification(ISpecification<T, TResult> spec)
         {
 
-            return SpecificationEvaluator<T, TResult>.GetQuery(_dbSet, spec);
+            return SpecificationEvaluator<T, TResult>.GetQuery(_dbContext.Set<T>(), spec);
         }
 
     }

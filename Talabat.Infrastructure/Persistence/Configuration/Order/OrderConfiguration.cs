@@ -21,13 +21,16 @@ namespace Talabat.Infrastructure.Persistence.Configuration.Order
                    .WithMany().
                    OnDelete(DeleteBehavior.SetNull);
             builder.HasIndex("DeliveryMethodId")
-                .IsUnique(true);
+                .IsUnique(false);
             builder.Property(order => order.Subtotal)
                    .HasColumnType("decimal(12,2)");
 
             builder.HasMany(order => order.Items)
                    .WithOne()
                    .OnDelete(DeleteBehavior.Cascade);
+
+            //  builder.Property(order => order.OrderDate)
+            //          .HasDefaultValueSql("")
 
         }
     }

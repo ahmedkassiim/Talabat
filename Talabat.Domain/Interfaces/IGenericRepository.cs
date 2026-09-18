@@ -7,5 +7,7 @@ namespace Talabat.Domain.Interfaces
 
         Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T, TResult> spec);
         Task<TResult?> GetWithSpec(ISpecification<T, TResult> spec);
+
+        Task AddAsync(T entity);
     }
 }
