@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Talabat.Domain.Entities;
 using Talabat.Domain.Interfaces;
 using Talabat.Infrastructure.Persistence.Data;
@@ -6,7 +6,7 @@ using Talabat.Infrastructure.Persistence.Specification;
 
 namespace Talabat.Infrastructure.Persistence.Repository
 {
-    public class GenericRepository<T, TResult> : IGenericRepository<T, TResult> where T : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly ApplcationDbContext _dbContext;
 
@@ -19,23 +19,22 @@ namespace Talabat.Infrastructure.Persistence.Repository
         public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-            _dbContext.SaveChanges();
         }
 
-        public async Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T, TResult> spec)
+        public async Task<IReadOnlyList<TResult>> GetAllWithSpec<TResult>(ISpecification<T, TResult> spec)
         {
             var query = await ApplySpecification(spec).ToListAsync();
             return query;
 
         }
 
-        public async Task<TResult?> GetWithSpec(ISpecification<T, TResult> spec)
+        public async Task<TResult?> GetWithSpec<TResult>(ISpecification<T, TResult> spec)
         {
             var entity = await ApplySpecification(spec).FirstOrDefaultAsync();
             return entity;
         }
 
-        private IQueryable<TResult> ApplySpecification(ISpecification<T, TResult> spec)
+        private IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> spec)
         {
 
             return SpecificationEvaluator<T, TResult>.GetQuery(_dbContext.Set<T>(), spec);

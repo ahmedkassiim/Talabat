@@ -1,4 +1,4 @@
-﻿using Talabat.Applcation.Specification.Order;
+using Talabat.Applcation.Specification.Order;
 using Talabat.Domain.Entities.Order_Aggregate;
 using Talabat.Domain.Entities.Products;
 using Talabat.Domain.Interfaces;
@@ -8,20 +8,13 @@ namespace Talabat.Applcation.Services
     public class OrderService : IOrderService
     {
         private readonly IBasketRepository _basketRepository;
-        private readonly IGenericRepository<Product, ProductOrdredItem> _productRepo;
-        private readonly IGenericRepository<DeliveryMethod, DeliveryMethod> _deliveryRepo;
-        private readonly IGenericRepository<Order, Order> _orderRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public OrderService(IBasketRepository basketRepo,
-            IGenericRepository<Product, ProductOrdredItem> productRepo,
-            IGenericRepository<DeliveryMethod, DeliveryMethod> deliveryRepo,
-            IGenericRepository<Order, Order> orderRepo
-            )
+                        IUnitOfWork unitOfWork)
         {
             _basketRepository = basketRepo;
-            _productRepo = productRepo;
-            _deliveryRepo = deliveryRepo;
-            _orderRepo = orderRepo;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Order> CreateOrderAsync(string basketId, Address shippingAddress, int? deliveryMethodId, string buyerEmail)
         {
@@ -38,8 +31,8 @@ namespace Talabat.Applcation.Services
 
             var basket = await _basketRepository.GetBasketAsync(basketId);
             var produtsId = basket?.Items.Select(b => b.Id);
-            var products = await _productRepo.GetAllWithSpec(new GetSelectedItemOnBasketSpecification(produtsId ?? new List<int>()));
-            var deliverMehtod = await _deliveryRepo.GetWithSpec(new GetDelivetyMethodByIdSpecification(deliveryMethodId));
+            var products = await _unitOfWork.Repository<Product>().GetAllWithSpec(new GetSelectedItemOnBasketSpecification(produtsId ?? new List<int>()));
+            var deliverMehtod = await _unitOfWork.Repository<DeliveryMethod>().GetWithSpec(new GetDelivetyMethodByIdSpecification(deliveryMethodId));
             var orderItems = new List<OrderItem>();
 
             foreach (var item in basket.Items)
@@ -56,7 +49,7 @@ namespace Talabat.Applcation.Services
 
             var subtotal = orderItems.Sum(p => p.Price * p.Quantity);
             var order = new Order(buyerEmail, address, deliverMehtod.Id, orderItems, subtotal);
-            await _orderRepo.AddAsync(order);
+            await _unitOfWork.Repository<Order>().AddAsync(order);
             return order;
         }
 

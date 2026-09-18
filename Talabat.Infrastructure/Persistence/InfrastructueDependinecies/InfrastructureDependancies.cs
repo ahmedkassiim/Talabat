@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -17,7 +17,7 @@ namespace Talabat.Infrastructure.Persistence.InfrastructueDependinecies
             {
                 option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddScoped<IConnectionMultiplexer>((serviceProvider) =>
             {
@@ -25,7 +25,7 @@ namespace Talabat.Infrastructure.Persistence.InfrastructueDependinecies
             });
 
             services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
-
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
             return services;
         }
     }
