@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +16,13 @@ namespace Talabat.APIs.Controllers
         private readonly SignInManager<ApplcationUser> _signInManager;
         private readonly UserManager<ApplcationUser> _userManager;
         private readonly ITokenServies _token;
-        private readonly IGenericRepository<Address, UserAddressDto> _addressrepo;
+        private readonly IGenericRepository<Address> _addressrepo;
         private readonly IMapper _mapper;
 
         public AccountsController(SignInManager<ApplcationUser> signInManager,
             UserManager<ApplcationUser> userManager,
             ITokenServies token,
-            IGenericRepository<Address, UserAddressDto> addressrepo,
+            IGenericRepository<Address> addressrepo,
             IMapper mapper)
         {
             _signInManager = signInManager;

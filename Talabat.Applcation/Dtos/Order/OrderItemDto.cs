@@ -1,0 +1,13 @@
+﻿namespace Talabat.Applcation.Dtos.Order
+{
+    public class OrderItemDto
+    {
+        public int Id { get; set; }
+        public string ProductName { get; set; } = default!;
+        public string PictureUrl { get; set; } = default!;
+
+        public decimal Price { get; set; }
+        public decimal Quantity { get; set; }
+
+    }
+}

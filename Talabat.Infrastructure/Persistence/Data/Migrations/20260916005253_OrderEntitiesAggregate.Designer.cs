@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Talabat.Infrastructure.Persistence.Data;
 
@@ -11,9 +12,11 @@ using Talabat.Infrastructure.Persistence.Data;
 namespace Talabat.Infrastructure.Persistence.Data.Migrations
 {
     [DbContext(typeof(ApplcationDbContext))]
-    partial class ApplcationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260916005253_OrderEntitiesAggregate")]
+    partial class OrderEntitiesAggregate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,7 +322,7 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Descripation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -344,10 +347,10 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DeliveryMethodId")
+                    b.Property<int>("DeliveryMethodId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset?>("OrderDate")
+                    b.Property<DateTimeOffset>("OrderDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("PaymentIntentId")
@@ -363,7 +366,8 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliveryMethodId");
+                    b.HasIndex("DeliveryMethodId")
+                        .IsUnique();
 
                     b.ToTable("Orders");
                 });
@@ -503,7 +507,8 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                     b.HasOne("Talabat.Domain.Entities.Order_Aggregate.DeliveryMethod", "Delivery")
                         .WithMany()
                         .HasForeignKey("DeliveryMethodId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Talabat.Domain.Entities.Order_Aggregate.Address", "ShippingAddress", b1 =>
                         {
@@ -548,8 +553,7 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                 {
                     b.HasOne("Talabat.Domain.Entities.Order_Aggregate.Order", null)
                         .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OrderId");
 
                     b.OwnsOne("Talabat.Domain.Entities.Order_Aggregate.ProductOrdredItem", "Product", b1 =>
                         {

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Talabat.APIs.Helper;
 using Talabat.Applcation.Dtos.Product;
 using Talabat.Domain.Interfaces;
@@ -18,7 +17,6 @@ namespace Talabat.APIs.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IReadOnlyList<Pagenation<ProductResponseDto>>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
             var result = await _servies.GetProducts(specParams);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Talabat.Infrastructure.Persistence.Data;
 
@@ -11,9 +12,11 @@ using Talabat.Infrastructure.Persistence.Data;
 namespace Talabat.Infrastructure.Persistence.Data.Migrations
 {
     [DbContext(typeof(ApplcationDbContext))]
-    partial class ApplcationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260917014748_UpdateOrderDataTimeToAllowNullableAndBeDatatimeOnly")]
+    partial class UpdateOrderDataTimeToAllowNullableAndBeDatatimeOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,8 +350,8 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
                     b.Property<int?>("DeliveryMethodId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset?>("OrderDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentIntentId")
                         .IsRequired()
@@ -363,7 +366,9 @@ namespace Talabat.Infrastructure.Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliveryMethodId");
+                    b.HasIndex("DeliveryMethodId")
+                        .IsUnique()
+                        .HasFilter("[DeliveryMethodId] IS NOT NULL");
 
                     b.ToTable("Orders");
                 });

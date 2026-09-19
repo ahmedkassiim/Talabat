@@ -1,4 +1,4 @@
-﻿using Talabat.Applcation.Dtos.Product;
+using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Category;
 using Talabat.Domain.Entities.Categorys;
 using Talabat.Domain.Interfaces;
@@ -7,15 +7,16 @@ namespace Talabat.Applcation.Services
 {
     public class CategoryServices<T, TResult> : ICategoryServices<Category, CategoryResponseDto>
     {
-        private readonly IGenericRepository<Category, CategoryResponseDto> _repo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryServices(IGenericRepository<Category, CategoryResponseDto> repo)
+        public CategoryServices(IUnitOfWork unitOfWork)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
+
         }
         public Task<IReadOnlyList<CategoryResponseDto>> GetAllCategories()
         {
-            var categories = _repo.GetAllWithSpec(new GetAllCategorySpecification());
+            var categories = _unitOfWork.Repository<Category>().GetAllWithSpec(new GetAllCategorySpecification());
             return categories;
         }
     }

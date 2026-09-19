@@ -1,4 +1,4 @@
-﻿using Talabat.Applcation.Dtos.Product;
+using Talabat.Applcation.Dtos.Product;
 using Talabat.Applcation.Specification.Brand;
 using Talabat.Domain.Entities.Brands;
 using Talabat.Domain.Interfaces;
@@ -7,16 +7,16 @@ namespace Talabat.Applcation.Services
 {
     public class BrandServices<T, TResult> : IBrandServices<Brand, BrandResponseDto>
     {
-        private readonly IGenericRepository<Brand, BrandResponseDto> _repo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BrandServices(IGenericRepository<Brand, BrandResponseDto> repo)
+        public BrandServices(IUnitOfWork unitOfWork)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
         }
         public async Task<IReadOnlyList<BrandResponseDto>> GetAllBrands()
         {
 
-            var brands = await _repo.GetAllWithSpec(new GetAllBrandSpecification());
+            var brands = await _unitOfWork.Repository<Brand>().GetAllWithSpec(new GetAllBrandSpecification());
 
             return brands;
         }

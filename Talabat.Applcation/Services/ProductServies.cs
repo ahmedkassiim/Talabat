@@ -9,24 +9,24 @@ namespace Talabat.Applcation.Services
 {
     public class ProductServies<TResult> : IProductServies<ProductResponseDto>
     {
-        private readonly IGenericRepository<Product, ProductResponseDto> _repo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
-        public ProductServies(IGenericRepository<Product, ProductResponseDto> repo, IConfiguration configuration)
+        public ProductServies(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
-            _repo = repo;
+            _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
 
         public async Task<ProductResponseDto?> GetProductById(int Id)
         {
-            var product = await _repo.GetWithSpec(new GetProductByIdSpecification(Id, _configuration));
+            var product = await _unitOfWork.Repository<Product>().GetWithSpec(new GetProductByIdSpecification(Id, _configuration));
             return product;
         }
 
         public async Task<(IReadOnlyList<ProductResponseDto> Products, int TotalCount)> GetProducts(ProductSpecParams specParams)
         {
             var spec = new GetAllProductSpecification(_configuration, specParams);
-            var products = await _repo.GetAllWithSpec(spec);
+            var products = await _unitOfWork.Repository<Product>().GetAllWithSpec(spec);
             var count = spec.TotalCount;
             return (products, count);
         }

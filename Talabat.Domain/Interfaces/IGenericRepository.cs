@@ -1,11 +1,13 @@
-﻿using Talabat.Domain.Entities;
+using Talabat.Domain.Entities;
 
 namespace Talabat.Domain.Interfaces
 {
-    public interface IGenericRepository<T, TResult> where T : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
 
-        Task<IReadOnlyList<TResult>> GetAllWithSpec(ISpecification<T, TResult> spec);
-        Task<TResult?> GetWithSpec(ISpecification<T, TResult> spec);
+        Task<IReadOnlyList<TResult>> GetAllWithSpec<TResult>(ISpecification<T, TResult> spec);
+        Task<TResult?> GetWithSpec<TResult>(ISpecification<T, TResult> spec);
+
+        Task AddAsync(T entity);
     }
 }
