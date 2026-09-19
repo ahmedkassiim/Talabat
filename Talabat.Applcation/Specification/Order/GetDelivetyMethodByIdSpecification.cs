@@ -6,10 +6,9 @@ namespace Talabat.Applcation.Specification.Order
         Domain.Specification.Specification<DeliveryMethod, DeliveryMethod>
     {
 
-        public GetDelivetyMethodByIdSpecification(int? deliveryMethodId)
+        public GetDelivetyMethodByIdSpecification(int deliveryMethodId)
         {
             AddCriteria(D => D.Id == deliveryMethodId);
-            ApplyDisableTracking();
         }
     }
 }

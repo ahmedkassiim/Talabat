@@ -2,13 +2,13 @@
 
 namespace Talabat.Domain.Interfaces
 {
-    public interface IOrderService
+    public interface IOrderService<TEntity>
     {
-        Task<Order> CreateOrderAsync(string basketId, Address shippingAddress, int? deliveryMethodId, string buyerEmail);
+        Task<Order> CreateOrderAsync(string basketId, Address shippingAddress, int deliveryMethodId, string buyerEmail);
 
-        Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyeremail);
+        Task<IReadOnlyList<TEntity>> GetOrdersForUserAsync(string buyeremail);
 
-        Task<Order> GetOrderByIdForUserAsync(string buyerEmail, int orderId);
+        Task<TEntity> GetOrderByIdForUserAsync(string buyerEmail, int orderId);
         Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync();
 
 

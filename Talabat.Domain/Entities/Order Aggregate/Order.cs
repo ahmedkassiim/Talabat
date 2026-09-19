@@ -26,7 +26,6 @@
         public DeliveryMethod? Delivery { get; set; }
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal Subtotal { get; set; }
-        public decimal GetTotal() => Subtotal + Delivery?.Cost ?? decimal.Zero;
         public string PaymentIntentId { get; set; } = string.Empty;
     }
 }
