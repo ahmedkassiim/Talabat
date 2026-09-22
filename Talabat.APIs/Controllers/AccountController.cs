@@ -11,7 +11,7 @@ using Talabat.Domain.Interfaces;
 
 namespace Talabat.APIs.Controllers
 {
-    public class AccountsController : BaseApiController
+    public class AccountController : BaseApiController
     {
         private readonly SignInManager<ApplcationUser> _signInManager;
         private readonly UserManager<ApplcationUser> _userManager;
@@ -19,7 +19,7 @@ namespace Talabat.APIs.Controllers
         private readonly IGenericRepository<Address> _addressrepo;
         private readonly IMapper _mapper;
 
-        public AccountsController(SignInManager<ApplcationUser> signInManager,
+        public AccountController(SignInManager<ApplcationUser> signInManager,
             UserManager<ApplcationUser> userManager,
             ITokenServies token,
             IGenericRepository<Address> addressrepo,
@@ -113,13 +113,13 @@ namespace Talabat.APIs.Controllers
         [HttpPut("address")]
         public async Task<ActionResult<UserAddressDto>> UpdateUserAddresss(UserAddressDto address)
         {
-
             var updatedAddress = _mapper.Map<Address>(address);
             var email = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.Users.Where(u => u.Email == email).Include(u => u.Address).FirstOrDefaultAsync();
+            if (user.Address is null)
+                user.Address = updatedAddress;
             updatedAddress.Id = user.Address.Id;
             user.Address = updatedAddress;
-
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
                 return NotFound();

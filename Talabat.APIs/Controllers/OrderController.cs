@@ -54,6 +54,12 @@ namespace Talabat.APIs.Controllers
             if (orders is null) return NotFound();
             return Ok(orders);
         }
+        [HttpGet("DilveryMethods")]
+        public async Task<ActionResult<DeliveryMethod>> GetAllDeliveryMehtod()
+        {
+            var deliveryMehthod = await _orderService.GetDeliveryMethodsAsync();
+            return Ok(deliveryMehthod);
+        }
     }
 }
 

@@ -12,7 +12,9 @@ namespace Talabat.Applcation.Specification.Order
             AddCriteria(O => O.BuyerEmail == buyerEmail);
             AddSelect(o => new ResepnseOrderDto
             {
+                Id = o.Id,
                 BuyerEmail = o.BuyerEmail,
+                OrderDate = o.OrderDate.ToString(),
                 ShippingAddress = o.ShippingAddress,
                 DeliveryName = o.Delivery.ShortName,
                 DeliveryCost = o.Delivery.Cost,

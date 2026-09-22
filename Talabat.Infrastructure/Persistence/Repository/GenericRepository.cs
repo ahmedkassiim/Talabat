@@ -21,6 +21,11 @@ namespace Talabat.Infrastructure.Persistence.Repository
             await _dbContext.Set<T>().AddAsync(entity);
         }
 
+        public void Delete(T entity)
+        {
+            _dbContext.Set<T>().Remove(entity);
+        }
+
         public async Task<IReadOnlyList<TResult>> GetAllWithSpec<TResult>(ISpecification<T, TResult> spec)
         {
             var query = await ApplySpecification(spec).ToListAsync();
@@ -32,6 +37,11 @@ namespace Talabat.Infrastructure.Persistence.Repository
         {
             var entity = await ApplySpecification(spec).FirstOrDefaultAsync();
             return entity;
+        }
+
+        public void Update(T entity)
+        {
+            _dbContext.Set<T>().Update(entity);
         }
 
         private IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> spec)
