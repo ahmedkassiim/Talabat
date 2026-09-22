@@ -8,6 +8,6 @@ namespace Talabat.Applcation.Dtos.Basket
         public string Id { get; set; } = default!;
         [Required]
         public List<BasketItemDto> Items { get; set; } = default!;
-
+        public int? DeliveryMethodId { get; set; }
     }
 }

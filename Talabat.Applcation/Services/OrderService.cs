@@ -10,12 +10,15 @@ namespace Talabat.Applcation.Services
     {
         private readonly IBasketRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPaymentService _paymentService;
 
         public OrderService(IBasketRepository basketRepo,
-                        IUnitOfWork unitOfWork)
+                        IUnitOfWork unitOfWork,
+                        IPaymentService paymentService)
         {
             _basketRepository = basketRepo;
             _unitOfWork = unitOfWork;
+            _paymentService = paymentService;
         }
         public async Task<Order> CreateOrderAsync(string basketId, Address shippingAddress, int deliveryMethodId, string buyerEmail)
         {
@@ -49,8 +52,17 @@ namespace Talabat.Applcation.Services
             }
 
             var subtotal = orderItems.Sum(p => p.Price * p.Quantity);
-            var order = new Order(buyerEmail, address, deliveryMethodId, orderItems, subtotal);
-            await _unitOfWork.Repository<Order>().AddAsync(order);
+
+            var productRepo = _unitOfWork.Repository<Order>();
+            var exsistOrder = await productRepo.GetWithSpec(new GetOrderByPaymentIntentSpecification(basket.PaymentIntentId));
+            if (exsistOrder is not null)
+            {
+                productRepo.Delete(exsistOrder);
+                await _paymentService.CreateOrUpdatePaymentIntentAsync(basketId);
+            }
+
+            var order = new Order(buyerEmail, address, deliveryMethodId, orderItems, subtotal, basket.PaymentIntentId);
+            await productRepo.AddAsync(order);
             var result = await _unitOfWork.ComplateAsync();
             if (result <= 0) return null!;
             return order;

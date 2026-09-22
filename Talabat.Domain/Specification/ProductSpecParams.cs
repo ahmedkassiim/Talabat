@@ -2,7 +2,7 @@
 {
     public class ProductSpecParams
     {
-        private const int MaxPageSize = 10;
+        private const int MaxPageSize = 9;
 
 
         private int pageSize;

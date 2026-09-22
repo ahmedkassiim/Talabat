@@ -9,5 +9,8 @@ namespace Talabat.Domain.Interfaces
         Task<TResult?> GetWithSpec<TResult>(ISpecification<T, TResult> spec);
 
         Task AddAsync(T entity);
+
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

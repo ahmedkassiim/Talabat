@@ -9,13 +9,14 @@
 
         }
 
-        public Order(string buyerEmail, Address shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subtotal)
+        public Order(string buyerEmail, Address shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subtotal, string paymentintentId)
         {
             BuyerEmail = buyerEmail;
             ShippingAddress = shippingAddress;
             DeliveryMethodId = deliveryMethodId;
             Items = items;
             Subtotal = subtotal;
+            PaymentIntentId = paymentintentId;
         }
 
         public string BuyerEmail { get; set; } = default!;
@@ -26,7 +27,7 @@
         public DeliveryMethod? Delivery { get; set; }
         public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
         public decimal Subtotal { get; set; }
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string PaymentIntentId { get; set; } = default!;
     }
 }
 

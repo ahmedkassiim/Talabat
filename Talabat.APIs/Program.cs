@@ -26,7 +26,16 @@ namespace Talabat.APIs
             builder.Services.AddOpenApi();
             builder.Services.ApplyInfrastructureDependancies(builder.Configuration)
                             .ApplyApplcationDependencies();
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins(builder.Configuration["FrontUrl:Url"] ?? "http://localhost:4200");
+                }
+                );
+            });
             // validation on Token 
             builder.Services.AddAuthentication(op => op.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, op =>
@@ -57,6 +66,7 @@ namespace Talabat.APIs
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("MyPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
